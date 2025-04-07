@@ -1,0 +1,118 @@
+<div class="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-3xl mx-auto">
+        <div class="text-center mb-12">
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">Verify Certificate</h1>
+            <p class="text-lg text-gray-600">Enter the certificate ID to verify its authenticity</p>
+        </div>
+
+        <div class="bg-white shadow-xl rounded-2xl p-8">
+            <form action="/verify" method="GET" class="space-y-8">
+                <div class="space-y-2">
+                    <label for="id" class="block text-base font-medium text-gray-700">Certificate ID</label>
+                    <div class="mt-1">
+                        <input type="text" name="id" id="id" required
+                            class="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 text-base"
+                            placeholder="Enter certificate ID">
+                    </div>
+                </div>
+
+                <div>
+                    <button type="submit"
+                        class="w-full flex justify-center py-3.5 px-6 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Verify Certificate
+                    </button>
+                </div>
+            </form>
+
+            {{#if error}}
+            <div class="mt-8">
+                <div class="rounded-lg bg-red-50 p-6 border-2 border-red-200">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <svg class="h-6 w-6 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-lg font-medium text-red-800">Error</h3>
+                            <div class="mt-2 text-base text-red-700">
+                                <p>{{error}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/if}}
+
+            {{#if certificate}}
+            <div class="mt-8">
+                <div class="rounded-lg bg-green-50 p-6 border-2 border-green-200">
+                    <div class="flex items-center justify-center">
+                        <div class="flex-shrink-0">
+                            <svg class="h-12 w-12 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-2xl font-bold text-green-800">Verified</h3>
+                            <div class="mt-2 text-base text-green-700">
+                                <p>This certificate has been successfully verified and is authentic.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 bg-white rounded-lg shadow overflow-hidden">
+                    <div class="px-6 py-6">
+                        <h4 class="text-lg font-medium text-gray-900 mb-6">Certificate Details</h4>
+                        <dl class="grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-2">
+                            <div class="sm:col-span-1">
+                                <dt class="text-base font-medium text-gray-500">Recipient Name</dt>
+                                <dd class="mt-2 text-base text-gray-900">{{certificate.recipientName}}</dd>
+                            </div>
+                            <div class="sm:col-span-1">
+                                <dt class="text-base font-medium text-gray-500">Course Name</dt>
+                                <dd class="mt-2 text-base text-gray-900">{{certificate.courseName}}</dd>
+                            </div>
+                            <div class="sm:col-span-1">
+                                <dt class="text-base font-medium text-gray-500">Completion Date</dt>
+                                <dd class="mt-2 text-base text-gray-900">{{formatDate certificate.completionDate}}</dd>
+                            </div>
+                            <div class="sm:col-span-1">
+                                <dt class="text-base font-medium text-gray-500">Certificate ID</dt>
+                                <dd class="mt-2 text-base text-gray-900">{{certificate.certificateId}}</dd>
+                            </div>
+                        </dl>
+                    </div>
+                    <div class="px-6 py-5 bg-gray-50">
+                        <div class="flex justify-between items-center">
+                            <div class="text-base">
+                                <a href="/certificates/{{certificate.certificateId}}" 
+                                   class="font-medium text-blue-600 hover:text-blue-500">
+                                    View Full Certificate
+                                </a>
+                            </div>
+                            <div>
+                                <a href="https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name={{certificate.courseName}}&organizationName=Certificate%20Management%20System&issueYear={{formatDate certificate.completionDate 'YYYY'}}&issueMonth={{formatDate certificate.completionDate 'MM'}}&certUrl={{encodeURIComponent (concat (concat (concat (concat 'http://localhost:5000/certificates/' certificate.certificateId) '/') certificate.certificateId) '.pdf')}}&certId={{certificate.certificateId}}"
+                                   target="_blank"
+                                   class="inline-flex items-center px-5 py-2.5 border border-transparent text-base font-medium rounded-lg text-white bg-[#0077B5] hover:bg-[#005E93] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0077B5]">
+                                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                                    </svg>
+                                    Share on LinkedIn
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/if}}
+        </div>
+    </div>
+</div> 

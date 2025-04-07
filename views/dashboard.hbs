@@ -1,0 +1,151 @@
+<div class="min-h-screen bg-gray-100">
+    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div class="bg-white shadow-xl rounded-2xl p-8 mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-8">Generate Certificate</h2>
+
+            {{#if error}}
+            <div class="rounded-lg bg-red-50 p-6 border-2 border-red-200 mb-8">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <svg class="h-6 w-6 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                            fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <h3 class="text-lg font-medium text-red-800">Error</h3>
+                        <div class="mt-2 text-base text-red-700">
+                            <p>{{error}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/if}}
+
+            {{#if success}}
+            <div class="rounded-lg bg-green-50 p-6 border-2 border-green-200 mb-8">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <svg class="h-6 w-6 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                            fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <h3 class="text-lg font-medium text-green-800">Success</h3>
+                        <div class="mt-2 text-base text-green-700">
+                            <p>{{success}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/if}}
+
+            <form action="/admin/certificates/generate" method="POST" class="space-y-8">
+                <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+                    <div class="space-y-2">
+                        <label for="recipientName" class="block text-base font-medium text-gray-700">Recipient Name</label>
+                        <div class="mt-1">
+                            <input type="text" name="recipientName" id="recipientName" required
+                                class="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 text-base"
+                                placeholder="Enter recipient's name">
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="courseName" class="block text-base font-medium text-gray-700">Course/Event Name</label>
+                        <div class="mt-1">
+                            <input type="text" name="courseName" id="courseName" required
+                                class="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 text-base"
+                                placeholder="Enter course or event name">
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="completionDate" class="block text-base font-medium text-gray-700">Completion Date</label>
+                        <div class="mt-1">
+                            <input type="date" name="completionDate" id="completionDate" required
+                                class="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 text-base">
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="certificateId" class="block text-base font-medium text-gray-700">Certificate ID (Optional)</label>
+                        <div class="mt-1">
+                            <input type="text" name="certificateId" id="certificateId"
+                                class="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 text-base"
+                                placeholder="Enter custom certificate ID">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-6">
+                    <button type="submit"
+                        class="w-full flex justify-center py-3.5 px-6 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Generate Certificate
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="bg-white shadow-xl rounded-2xl p-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-8">Recent Certificates</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col"
+                                class="px-6 py-4 text-left text-base font-medium text-gray-500 uppercase tracking-wider">
+                                ID
+                            </th>
+                            <th scope="col"
+                                class="px-6 py-4 text-left text-base font-medium text-gray-500 uppercase tracking-wider">
+                                Recipient
+                            </th>
+                            <th scope="col"
+                                class="px-6 py-4 text-left text-base font-medium text-gray-500 uppercase tracking-wider">
+                                Course
+                            </th>
+                            <th scope="col"
+                                class="px-6 py-4 text-left text-base font-medium text-gray-500 uppercase tracking-wider">
+                                Date
+                            </th>
+                            <th scope="col"
+                                class="px-6 py-4 text-left text-base font-medium text-gray-500 uppercase tracking-wider">
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {{#each certificates}}
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-base text-gray-900">
+                                {{this.certificateId}}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-base text-gray-900">
+                                {{this.recipientName}}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-base text-gray-900">
+                                {{this.courseName}}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-base text-gray-900">
+                                {{formatDate this.completionDate}}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-base text-gray-900">
+                                <a href="/certificates/{{this.certificateId}}"
+                                    class="text-blue-600 hover:text-blue-900 mr-4">View</a>
+                                <a href="/certificates/{{this.certificateId}}/pdf"
+                                    class="text-blue-600 hover:text-blue-900">Download PDF</a>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div> 
